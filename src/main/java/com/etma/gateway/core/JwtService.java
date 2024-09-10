@@ -9,10 +9,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 
 import lombok.extern.slf4j.Slf4j;
@@ -82,6 +79,7 @@ public class JwtService {
             UserDetails userDetails,
             long expiration
     ) {
+        log.info("Expiration => {}", new Date(System.currentTimeMillis() + expiration));
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
