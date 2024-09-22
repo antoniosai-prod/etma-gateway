@@ -21,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
@@ -86,4 +87,14 @@ public class V2_UserServiceImpl implements UserService {
 
         userRepository.deleteById(userId);
     }
+
+//    @Override
+//    public Mono<UserMaterializedViewEntity> getUserDetails(String username) {
+//        return userMaterializedViewRepository.findByUsernameMono(username);
+//    }
+
+//    @Override
+//    public Mono<User> findByUsername(String username) {
+//        return userRepository.findByUsername(username);
+//    }
 }

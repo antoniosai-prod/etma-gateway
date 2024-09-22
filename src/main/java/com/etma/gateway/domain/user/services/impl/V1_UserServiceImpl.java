@@ -1,5 +1,6 @@
 package com.etma.gateway.domain.user.services.impl;
 
+import com.etma.gateway.domain.user.entities.UserMaterializedViewEntity;
 import com.etma.shared.core.exceptions.NotFoundException;
 import com.etma.shared.core.utils.ObjectMapperUtil;
 import com.etma.shared.core.utils.PaginationUtil;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
@@ -82,4 +84,9 @@ public class V1_UserServiceImpl implements UserService {
 
         userRepository.deleteById(userId);
     }
+
+//    @Override
+//    public Mono<UserMaterializedViewEntity> getUserDetails(String username) {
+//        return null;
+//    }
 }
