@@ -48,12 +48,12 @@ public class SecurityConfiguration {
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) {
         return http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)  // Disable CSRF
-                .securityContextRepository(NoOpServerSecurityContextRepository.getInstance())  // Disable saving security context
-//                .authenticationManager(jwtAuthenticationFilter)
-                .authorizeExchange(exchange -> exchange
-                        .pathMatchers("/v1/authentication/**").permitAll()  // Allow unauthenticated access to public endpoints
-                        .anyExchange().authenticated())  // Require authentication for other requests
-//                .addFilterBefore((WebFilter) jwtAuthenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION)  // Add your JwtAuthenticationFilter
+//                .securityContextRepository(NoOpServerSecurityContextRepository.getInstance())  // Disable saving security context
+////                .authenticationManager(jwtAuthenticationFilter)
+//                .authorizeExchange(exchange -> exchange
+//                        .pathMatchers("/v1/authentication/**").permitAll()  // Allow unauthenticated access to public endpoints
+//                        .anyExchange().authenticated())  // Require authentication for other requests
+////                .addFilterBefore((WebFilter) jwtAuthenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION)  // Add your JwtAuthenticationFilter
                 .build();
     }
 

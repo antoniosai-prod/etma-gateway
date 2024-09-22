@@ -1,0 +1,55 @@
+server:
+  port: 8080
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: user-management-route
+          uri: http://localhost:6001
+          predicates:
+            - Path=/user-management/**
+          filters:
+            - StripPrefix=1
+        - id: master-data-route
+          uri: http://localhost:8000
+          predicates:
+            - Path=/master-data/**
+          filters:
+            - StripPrefix=1
+  main:
+    web-application-type: reactive
+    allow-bean-definition-overriding: true
+  application:
+    name: ETMA - Gateway
+    version: 0.0.1
+  datasource:
+    driverClassName: org.postgresql.Driver
+    hikari:
+      idle-timeout: 5000
+      max-lifetime: 10000
+      maximum-pool-size: 10
+      minimum-idle: 3
+    initialization-mode: always
+    password: dbwarehousedev
+    platform: postgres
+    url: jdbc:postgresql://172.16.41.73:15432/dbwarehouse
+    username: dbwarehousedev
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: false
+    show-sql: true
+  output:
+    ansi:
+      enabled: ALWAYS
+security:
+  jwt:
+    secret-key: 3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b
+    expiration-time: 43200000
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.security: DEBUG
+    reactor.netty: DEBUG
