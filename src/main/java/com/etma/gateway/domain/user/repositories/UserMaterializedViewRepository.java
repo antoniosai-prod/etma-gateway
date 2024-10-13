@@ -4,7 +4,6 @@ import com.etma.gateway.domain.user.entities.UserMaterializedViewEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
-import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 

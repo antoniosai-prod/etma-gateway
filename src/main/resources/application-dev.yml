@@ -30,10 +30,10 @@ spring:
       maximum-pool-size: 10
       minimum-idle: 3
     initialization-mode: always
-    password: dbwarehousedev
+    password: etmadevelopment
     platform: postgres
-    url: jdbc:postgresql://172.16.41.73:15432/dbwarehouse
-    username: dbwarehousedev
+    url: jdbc:postgresql://172.16.41.73:15433/etma_db
+    username: etmadevelopment
   jpa:
     hibernate:
       ddl-auto: validate

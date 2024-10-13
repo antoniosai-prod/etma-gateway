@@ -74,7 +74,7 @@ public class UserMaterializedViewEntity implements Serializable, UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override

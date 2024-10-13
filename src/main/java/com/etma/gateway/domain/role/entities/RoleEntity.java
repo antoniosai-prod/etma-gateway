@@ -19,7 +19,8 @@ import java.util.List;
 public class RoleEntity implements Serializable {
     @Id
     @Column(name = "idumu", nullable = false, unique = true)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_seq_generator")
+    @SequenceGenerator(name = "role_seq_generator", sequenceName = "etma.user_mtd_role_idumu_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "aonam", length = 40, nullable = false, unique = true)

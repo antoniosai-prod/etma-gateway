@@ -1,13 +1,13 @@
 package com.etma.gateway.domain.scope.services.impl;
 
-import com.etma.shared.core.exceptions.NotFoundException;
-import com.etma.shared.core.utils.ObjectMapperUtil;
-import com.etma.shared.core.utils.PaginationUtil;
 import com.etma.gateway.domain.scope.dto.ScopeDTO;
 import com.etma.gateway.domain.scope.entities.ScopeEntity;
 import com.etma.gateway.domain.scope.repositories.ScopeRepository;
 import com.etma.gateway.domain.scope.requests.ScopePaginationRequest;
 import com.etma.gateway.domain.scope.services.ScopeService;
+import com.etma.shared.core.exceptions.NotFoundException;
+import com.etma.shared.core.utils.ObjectMapperUtil;
+import com.etma.shared.core.utils.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

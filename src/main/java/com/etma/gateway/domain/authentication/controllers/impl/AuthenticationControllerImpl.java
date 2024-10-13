@@ -8,14 +8,19 @@ import com.etma.gateway.domain.authentication.services.AuthenticationService;
 import com.etma.gateway.domain.user.entities.UserMaterializedViewEntity;
 import com.etma.gateway.domain.user.services.UserService;
 import com.etma.shared.core.exceptions.NotFoundException;
+import com.etma.shared.core.exceptions.UnauthorizedException;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/v1/authentication")
 @RestController
 @Slf4j
+@Validated
 public class AuthenticationControllerImpl {
     @Autowired
     private JwtService jwtService;
@@ -37,16 +42,20 @@ public class AuthenticationControllerImpl {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationLoginResponseDTO> authenticate(@RequestBody AuthenticationLoginDTO loginUserDto) {
-        UserMaterializedViewEntity authenticatedUser = authenticationService.authenticate(loginUserDto);
+    public ResponseEntity<AuthenticationLoginResponseDTO> authenticate(@RequestBody @Valid AuthenticationLoginDTO loginUserDto) throws UnauthorizedException {
+        try {
+            UserMaterializedViewEntity authenticatedUser = authenticationService.authenticate(loginUserDto);
 
 
-        String jwtToken = jwtService.generateToken(authenticatedUser);
+            String jwtToken = jwtService.generateToken(authenticatedUser);
 
-        AuthenticationLoginResponseDTO loginResponse = new AuthenticationLoginResponseDTO();
-        loginResponse.setExpiresIn(jwtService.getExpirationTime());
-        loginResponse.setAccessToken(jwtToken);
+            AuthenticationLoginResponseDTO loginResponse = new AuthenticationLoginResponseDTO();
+            loginResponse.setExpiresIn(jwtService.getExpirationTime());
+            loginResponse.setAccessToken(jwtToken);
 
-        return ResponseEntity.ok(loginResponse);
+            return ResponseEntity.ok(loginResponse);
+        } catch (BadCredentialsException ex) {
+            throw new UnauthorizedException(ex.getMessage());
+        }
     }
 }

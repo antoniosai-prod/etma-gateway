@@ -1,9 +1,9 @@
 package com.etma.gateway.domain.scope.services;
 
-import com.etma.shared.core.exceptions.NotFoundException;
-import com.etma.shared.core.utils.PaginationUtil;
 import com.etma.gateway.domain.scope.dto.ScopeDTO;
 import com.etma.gateway.domain.scope.requests.ScopePaginationRequest;
+import com.etma.shared.core.exceptions.NotFoundException;
+import com.etma.shared.core.utils.PaginationUtil;
 
 public interface ScopeService {
     PaginationUtil<ScopeDTO> getAllScopeByPagination(ScopePaginationRequest scopeRequest);

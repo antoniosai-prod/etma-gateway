@@ -1,38 +1,17 @@
 server:
   port: 8080
 spring:
-  web:
-    cors:
-      mappings:
-        "/**":
-          allowed-origins: "http://localhost:4200,https://ragamapan.com"
-          allowed-methods: "*"
-          allowed-headers: "*"
-          allow-credentials: true
   cloud:
     gateway:
-      globalcors:
-        corsConfigurations:
-          "[/*/**]":
-            allowedHeaders: "*"
-            allowedOrigins:
-              - "https://ragamapan.com/"
-              - "http://localhost:4200/"
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - PATCH
-              - DELETE
       routes:
         - id: user-management-route
-          uri: http://etma-usermanagement:6001
+          uri: http://localhost:6001
           predicates:
             - Path=/user-management/**
           filters:
             - StripPrefix=1
         - id: master-data-route
-          uri: http://etma-masterdata:8000
+          uri: http://localhost:8000
           predicates:
             - Path=/master-data/**
           filters:
@@ -51,10 +30,10 @@ spring:
       maximum-pool-size: 10
       minimum-idle: 3
     initialization-mode: always
-    password: etmadevelopment
+    password: cmFnYW1hcGFuX3N0cjBucDRzc3cwcmQzdjNy
     platform: postgres
-    url: jdbc:postgresql://172.16.41.73:15433/etma_db
-    username: etmadevelopment
+    url: jdbc:postgresql://localhost:5432/etma_db
+    username: ragamapan_user_db
   jpa:
     hibernate:
       ddl-auto: validate

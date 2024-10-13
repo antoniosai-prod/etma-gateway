@@ -12,6 +12,12 @@ public class ApiGatewayApplication {
 		SpringApplication.run(ApiGatewayApplication.class, args);
 	}
 
+	public String helloWorld() {
+		String name = "Yoga";
+
+		return name;
+	}
+
 //	@Bean
 //	public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
 //

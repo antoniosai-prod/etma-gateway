@@ -30,16 +30,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     public UserMaterializedViewEntity authenticate(AuthenticationLoginDTO input) {
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        input.getUsername(),
+                        input.getEmail(),
                         input.getPassword()
                 )
         );
 
-        log.info("Input ==> {}", input);
-
-        return userRepository.findByUsername(input.getUsername())
+        return userRepository.findByEmail(input.getEmail())
                 .orElseThrow();
     }
 }

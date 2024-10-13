@@ -1,10 +1,6 @@
 package com.etma.gateway.domain.user.services.impl;
 
 
-import com.etma.shared.core.exceptions.NotFoundException;
-import com.etma.shared.core.utils.ObjectMapperUtil;
-import com.etma.shared.core.utils.PaginationUtil;
-import com.etma.shared.core.utils.StringUtil;
 import com.etma.gateway.domain.user.dto.InsertUserDTO;
 import com.etma.gateway.domain.user.dto.UpdateUserDTO;
 import com.etma.gateway.domain.user.dto.UserDTO;
@@ -14,6 +10,10 @@ import com.etma.gateway.domain.user.repositories.UserMaterializedViewRepository;
 import com.etma.gateway.domain.user.repositories.UserRepository;
 import com.etma.gateway.domain.user.requests.UserRequest;
 import com.etma.gateway.domain.user.services.UserService;
+import com.etma.shared.core.exceptions.NotFoundException;
+import com.etma.shared.core.utils.ObjectMapperUtil;
+import com.etma.shared.core.utils.PaginationUtil;
+import com.etma.shared.core.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,7 +21,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
