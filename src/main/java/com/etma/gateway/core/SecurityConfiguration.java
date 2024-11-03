@@ -1,86 +1,57 @@
 package com.etma.gateway.core;
 
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.server.context.ServerSecurityContextRepository;
+import org.springframework.security.web.server.context.WebSessionServerSecurityContextRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@EnableWebFluxSecurity
-@Slf4j
+@EnableMethodSecurity
 public class SecurityConfiguration {
-    private final AuthenticationProvider authenticationProvider;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-
-    public SecurityConfiguration(
-            JwtAuthenticationFilter jwtAuthenticationFilter,
-            AuthenticationProvider authenticationProvider
-    ) {
-        this.authenticationProvider = authenticationProvider;
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-    }
-
+    @Autowired
+    private JwtService jwtService;
 
     @Bean
-    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) {
+    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+
         return http
-                .csrf(ServerHttpSecurity.CsrfSpec::disable)
+                .csrf(ServerHttpSecurity.CsrfSpec::disable)  // Disable CSRF
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
-                    configuration.setAllowedOrigins(Arrays.asList("*"));
-                    configuration.setAllowedMethods(Arrays.asList("*"));
-                    configuration.setAllowedHeaders(Arrays.asList("*"));
+                    configuration.setAllowedOrigins(List.of("*"));  // Adjust CORS settings
+                    configuration.setAllowedMethods(List.of("*"));
+                    configuration.setAllowedHeaders(List.of("*"));
                     return configuration;
-                }))// Disable CSRF
-//                .securityContextRepository(NoOpServerSecurityContextRepository.getInstance())  // Disable saving security context
-////                .authenticationManager(jwtAuthenticationFilter)
+                }))
 //                .authorizeExchange(exchange -> exchange
-//                        .pathMatchers("/v1/authentication/**").permitAll()  // Allow unauthenticated access to public endpoints
-//                        .anyExchange().authenticated())  // Require authentication for other requests
-////                .addFilterBefore((WebFilter) jwtAuthenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION)  // Add your JwtAuthenticationFilter
+//                        .pathMatchers("/v1/authentication/**").permitAll()  // Permit all requests to authentication endpoints
+//                        .anyExchange().authenticated()  // All other endpoints require authentication
+//                )
+//                .addFilterAt(jwtAuthenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION)  // Add JWT filter
+//                .authenticationManager(authenticationManager)  // Reactive AuthenticationManager
+//                .securityContextRepository(NoOpServerSecurityContextRepository.getInstance())  // Disable session management (stateless)
                 .build();
     }
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/v1/authentication/**").permitAll()
-                    // .requestMatchers("/master-data/**").permitAll()
-                    // .requestMatchers("/user-management/**").permitAll()
-                    .anyRequest().authenticated()
-            )
-                .cors(cors -> cors.configurationSource(request -> {
-                    CorsConfiguration configuration = new CorsConfiguration();
-                    configuration.setAllowedOrigins(Arrays.asList("*"));
-                    configuration.setAllowedMethods(Arrays.asList("*"));
-                    configuration.setAllowedHeaders(Arrays.asList("*"));
-                    return configuration;
-                }))
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-            .authenticationProvider(authenticationProvider);
-        return http.build();
-    }
 
+    @Bean
+    public ServerSecurityContextRepository serverSecurityContextRepository() {
+        return new WebSessionServerSecurityContextRepository();
+    }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
@@ -96,4 +67,5 @@ public class SecurityConfiguration {
 
         return source;
     }
+
 }
